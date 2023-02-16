@@ -1,1 +1,21 @@
 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Widgets</title>
+  </head>
+  <body>
+    <h1>Widgets disponíveis</h1>
+    <ul>
+      <?php
+        // get a list of all HTML files in the directory
+        $html_files = glob("*.html");
+        
+        // loop through the array of HTML files and create links
+        foreach ($html_files as $file) {
+          echo "<li><a href=\"$file\">$file</a></li>";
+        }
+      ?>
+    </ul>
+  </body>
+</html>
