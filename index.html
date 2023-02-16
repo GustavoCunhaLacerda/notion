@@ -6,16 +6,39 @@
   </head>
   <body>
     <h1>Widgets disponíveis</h1>
-    <ul>
-      <?php
-        // get a list of all HTML files in the directory
-        $html_files = glob("*.html");
-        
-        // loop through the array of HTML files and create links
-        foreach ($html_files as $file) {
-          echo "<li><a href=\"$file\">$file</a></li>";
+    <ul id="fileList"></ul>
+    
+    <script>
+      // get a list of all HTML files in the directory
+      var files = [];
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", ".", true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var doc = new DOMParser().parseFromString(xhr.responseText, "text/html");
+          var links = doc.getElementsByTagName("a");
+          for (var i = 0; i < links.length; i++) {
+            var link = links[i];
+            var href = link.getAttribute("href");
+            if (href.endsWith(".html")) {
+              files.push(href);
+            }
+          }
+          
+          // loop through the array of HTML files and create links
+          var fileList = document.getElementById("fileList");
+          for (var j = 0; j < files.length; j++) {
+            var file = files[j];
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.href = file;
+            a.innerHTML = file;
+            li.appendChild(a);
+            fileList.appendChild(li);
+          }
         }
-      ?>
-    </ul>
+      };
+      xhr.send();
+    </script>
   </body>
 </html>
